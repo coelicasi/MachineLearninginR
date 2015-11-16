@@ -7,7 +7,7 @@ owls.training<-owls[ind==1, 1:4]#all rows set as 1 are for training, 2/3 of set
 owls.testing<-owls[ind==2, 1:4]#all rows with 2 are set for testing
 owls.trainLabel<-owls[ind==1, 5]
 owls.testLabel<-owls[ind==2,5]
-owls.barnowl <- c(owls$type==BarnOwl)
+owls.barnowl <- which(colnames(owls.testLabel) = "BarnOwls")
 
 #takes in the training set and outputs a prediction of trainLabel
 model<-function(owls.training, owls.trainLabel){
