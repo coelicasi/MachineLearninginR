@@ -15,7 +15,7 @@ test<-by(owls.training, list(type=owls$type), function(x){
     apply(y, 2, mean)
 })
 #minBarn<-apply(owls.barn, min)
-#maxBarn<-apply(owls.barn, 2, max)
+ls()#maxBarn<-apply(owls.barn, 2, max)
 
 #takes in the training set and outputs a prediction of trainLabel
 model<-function(owls.training, owls.trainLabel){
