@@ -23,50 +23,35 @@ totEntropy <-  -((b[2:2]/owls.pop)*log2(b[2:2]/owls.pop)) - ((b[1:1]/owls.pop)*l
 #takes the averages of the attributes to use in entropy calculations
 greater<-apply(owls.training[1:4], 2, function(x) length(x[mean(x)>x]))
 less<-apply(owls.training[1:4], 2, function(x) length(x[mean(x)<x]))
-
+treeDF <- list()
 
 entropy<-function(owls.training){
   
-  if(length(owls.training==0)){
-    print("Out of training data!")
-  }else if(duplicated(owls.training[, 5])){
-    print("All available classes are the same!")
-  }else{
+  #if(length(owls.training==0)){
+   # print("Out of training data!")
+  #}else if(duplicated(owls.training[, 5])){
+   # print("All available classes are the same!")
+  #}else{
+  for(i in owls.pop){
     for (i in owls.training[1:4]){
       #H(s) = E p * log2 (p)
       H <- -((less/owls.pop)* log2(less/owls.pop)) - ((greater/owls.pop)*log2(greater/owls.pop))
+      
       gain<- totEntropy - H
       
-      splitter <- names(which.max(gain))
+      splitter <- names(which.max(gain))#splits data
+      split <- mean(splitter)
       
       DF <- data.frame(owls.training[1:4])
       drops <- c(splitter)
-      newD <- DF[, !(names(DF) %in% drops)]
+      newD <- DF[, !(names(DF) %in% drops)] #remaining data
+      treeDF<-entropy(newD)
       
-      for(i in newD){
-        Hnode <- -((less/owls.pop)* log2(less/owls.pop)) - ((greater/owls.pop)*log2(greater/owls.pop))
-        gainNode<- totEntropy - H
-        
-        node <- names(which.max(gain))
-        
-        DF <- data.frame(newD)
-        drops <- c(node)
-        newD2 <- DF[, !(names(DF) %in% drops)]
       }
-      
-      root <- owls.training[splitter]
-      criteria <- sum(root)/nrow(root) #for some reason I could not perform a mean on the data
-      if(node<criteria){
-        df <- data.frame("left"==node)
-      }else{
-        df <- c(df, data.frame("right" == node))
-      }
-    }
   }
- 
 
+ # }
 }
-
-
-
-
+  
+entropy(owls.training)
+print(treeDF)
