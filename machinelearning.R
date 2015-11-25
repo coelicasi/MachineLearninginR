@@ -26,14 +26,14 @@ less<-apply(owls.training[1:4], 2, function(x) length(x[mean(x)<x]))
 treeDF <- list()
 
 entropy<-function(owls.training){
-  
-  #if(length(owls.training==0)){
-   # print("Out of training data!")
-  #}else if(duplicated(owls.training[, 5])){
-   # print("All available classes are the same!")
-  #}else{
-  for(i in owls.pop){
-    for (i in owls.training[1:4]){
+  #stop cases
+  if(length(owls.training==0)){
+    print("Out of training data!")
+  }else if(duplicated(owls.training[, 5])){
+    print("All available classes are the same!")
+  }else{
+  for(i in owls.pop){#for all in the training data
+    for (i in owls.training[1:4]){#for each attribute
       #H(s) = E p * log2 (p)
       H <- -((less/owls.pop)* log2(less/owls.pop)) - ((greater/owls.pop)*log2(greater/owls.pop))
       
@@ -45,12 +45,12 @@ entropy<-function(owls.training){
       DF <- data.frame(owls.training[1:4])
       drops <- c(splitter)
       newD <- DF[, !(names(DF) %in% drops)] #remaining data
-      treeDF<-entropy(newD)
+      treeDF<-data.frame(split, entropy(newD))
       
       }
   }
 
- # }
+  }
 }
   
 entropy(owls.training)
